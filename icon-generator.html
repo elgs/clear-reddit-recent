@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .icon {
+            width: 128px;
+            height: 128px;
+            background: linear-gradient(45deg, #ff4500, #ff6500);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            color: white;
+            font-weight: bold;
+            font-size: 48px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            margin: 20px;
+        }
+        
+        .icon-48 {
+            width: 48px;
+            height: 48px;
+            font-size: 18px;
+            border-radius: 8px;
+        }
+        
+        .icon-16 {
+            width: 16px;
+            height: 16px;
+            font-size: 8px;
+            border-radius: 3px;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        
+        h3 {
+            margin: 10px 0;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>128x128 Icon</h3>
+        <div id="icon-128" class="icon">🗑️</div>
+        
+        <h3>48x48 Icon</h3>
+        <div id="icon-48" class="icon icon-48">🗑️</div>
+        
+        <h3>16x16 Icon</h3>
+        <div id="icon-16" class="icon icon-16">🗑️</div>
+        
+        <p>Right-click each icon and "Save image as..." to save as PNG files.</p>
+        <p>Name them icon128.png, icon48.png, and icon16.png respectively.</p>
+        
+        <button onclick="downloadIcon('icon-128', 'icon128.png')">Download 128x128</button>
+        <button onclick="downloadIcon('icon-48', 'icon48.png')">Download 48x48</button>
+        <button onclick="downloadIcon('icon-16', 'icon16.png')">Download 16x16</button>
+        
+        <br><br>
+        <p><strong>Alternative method if downloads don't work:</strong></p>
+        <button onclick="captureWithDevTools('icon-128')">Help for 128x128</button>
+        <button onclick="captureWithDevTools('icon-48')">Help for 48x48</button>
+        <button onclick="captureWithDevTools('icon-16')">Help for 16x16</button>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        function downloadIcon(elementId, filename) {
+            const element = document.getElementById(elementId);
+            
+            // Check if html2canvas is loaded
+            if (typeof html2canvas === 'undefined') {
+                alert('html2canvas library failed to load. Please use the browser developer tools method:\n\n1. Right-click the icon\n2. Select "Inspect Element"\n3. Right-click the highlighted div in DevTools\n4. Select "Capture node screenshot"');
+                return;
+            }
+            
+            html2canvas(element, {
+                backgroundColor: null,
+                scale: 1, // Higher quality
+                useCORS: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = filename;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(error => {
+                console.error('Error generating image:', error);
+                alert('Error generating image. Please try the manual screenshot method.');
+            });
+        }
+        
+        // Alternative method using browser's built-in screenshot capability
+        function captureWithDevTools(elementId) {
+            const element = document.getElementById(elementId);
+            alert('Developer Tools Method:\n\n1. Right-click this icon\n2. Select "Inspect Element"\n3. In DevTools, right-click the highlighted <div>\n4. Select "Capture node screenshot"\n\nThe image will be saved to your Downloads folder.');
+        }
+    </script>
+</body>
+</html>
